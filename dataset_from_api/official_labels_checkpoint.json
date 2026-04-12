@@ -1,0 +1,16 @@
+{
+  "account_level_path": "C:\\Users\\Nico\\Documents\\Bluesky\\Bluesky-moderation-analysis\\dataset_from_api\\official_labels_account_level.parquet",
+  "batch_size": 100,
+  "completed_at": "2026-04-12T11:47:59.919289+00:00",
+  "did_column_name": "('did', '')",
+  "enriched_path": "C:\\Users\\Nico\\Documents\\Bluesky\\Bluesky-moderation-analysis\\dataset_from_api\\fingerprints_enriched_with_official_labels.parquet",
+  "final_long_path": "C:\\Users\\Nico\\Documents\\Bluesky\\Bluesky-moderation-analysis\\dataset_from_api\\official_labels_long.parquet",
+  "input_parquet": "C:\\Users\\Nico\\Documents\\Bluesky\\Bluesky-moderation-analysis\\datasets\\fingerprints.parquet",
+  "last_completed_batch_index": 1935,
+  "last_successful_write": "2026-04-12T11:47:59.919289+00:00",
+  "status": "completed",
+  "total_batches": 1936,
+  "total_labels_collected_so_far": 3157,
+  "total_unique_dids": 193556,
+  "version": 1
+}
