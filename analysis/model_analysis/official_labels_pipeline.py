@@ -55,7 +55,7 @@ def resolve_project_root() -> Path:
     candidates.extend([cwd, *cwd.parents])
 
     for candidate in candidates:
-        if (candidate / "datasets" / "fingerprints.parquet").exists():
+        if (candidate / "datasets" / "model" / "fingerprints.parquet").exists():
             return candidate
         if (candidate / ".git").exists():
             return candidate
@@ -64,8 +64,8 @@ def resolve_project_root() -> Path:
 
 
 PROJECT_ROOT = resolve_project_root()
-INPUT_PARQUET_PATH = PROJECT_ROOT / "datasets" / "fingerprints.parquet"
-OUTPUT_DIR = PROJECT_ROOT / "dataset_from_api"
+INPUT_PARQUET_PATH = PROJECT_ROOT / "datasets" / "model" / "fingerprints.parquet"
+OUTPUT_DIR = PROJECT_ROOT / "datasets" / "model" / "labeller"
 LONG_CHUNK_DIR = OUTPUT_DIR / "official_labels_long_batches"
 CHECKPOINT_PATH = OUTPUT_DIR / "official_labels_checkpoint.json"
 FINAL_LONG_PATH = OUTPUT_DIR / "official_labels_long.parquet"
