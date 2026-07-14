@@ -2,6 +2,7 @@
 __pycache__/
 *.pyc
 datasets/
+balduf_anon_march_2026/
 *.parquet
 *.feather
 *.csv.gz
@@ -25,3 +26,5 @@ datasets/
 bluesky_report.zip
 bluesky_report/main.pdf
 bluesky_report/ROTA-NICOLA.pdf
+bluesky_report_heldout/build/
+bluesky_report_heldout/main_nobiber.tex

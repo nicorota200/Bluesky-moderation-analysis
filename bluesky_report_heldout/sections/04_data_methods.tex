@@ -1,0 +1,91 @@
+\section{Parte sperimentale: dati e metodi}
+
+\subsection{Origine e struttura dei dati}
+
+L'analisi usa dataset concessi dal gruppo di ricerca guidato da Balduf e dataset derivati costruiti nel progetto a partire da dati osservabili tramite ATProto. Le fonti operative includono profili, post, blocchi, liste, elementi delle liste, adozione delle liste, labels ufficiali e labels prodotte da labeler indipendenti. I dati riguardano principalmente marzo 2026 e sono arricchiti con log del labeler ufficiale.
+
+Per ragioni di minimizzazione del dato, i dati grezzi non anonimizzati sono rimasti sulla macchina virtuale di analisi. Localmente sono stati usati dataset derivati e anonimizzati: i DID reali sono stati sostituiti da identificativi anonimi e i dataset impiegati nel report contengono variabili aggregate, metadati temporali e indicatori di segnale, non contenuti testuali personali.
+
+La scala dei dati e' riassunta in \cref{tab:scale}. La manifest associata a marzo include \num{4189} file di log; alcuni file possono contenere eventi con timestamp appartenenti anche ad altri mesi. Per questo i conteggi sui takedown sono sempre basati sul filtro temporale dell'evento, non sulla sola appartenenza del file alla manifest.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Scala dei dataset principali usati nello studio.}
+  \label{tab:scale}
+  \begin{tabularx}{\linewidth}{X r}
+    \toprule
+    Quantita' & Valore \\
+    \midrule
+    DID distinti nei profili & \num{1222452} \\
+    File di log nella manifest di marzo & \num{4189} \\
+    Righe post nel periodo operativo & \num{36946883} \\
+    Eventi account-level \code{!takedown} non-neg in marzo & \num{159161} \\
+    Account positivi unici in marzo & \num{158803} \\
+    Positivi nel dataset operativo 11--21 marzo & \num{47821} \\
+    Account negativi distinti & \num{366515} \\
+    Osservazioni negative account-giorno & \num{4031665} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Software e ambiente di analisi}
+
+Le elaborazioni sono state svolte in Python, con DuckDB per interrogare file Parquet e CSV compressi, pandas e NumPy per la manipolazione tabellare, scikit-learn per la Random Forest e LaTeX per la redazione del report. DuckDB e' stato usato perche' permette query SQL su file colonnari di grandi dimensioni senza caricarli integralmente in memoria, mantenendo riproducibili le aggregazioni su blocchi, post e labels.
+
+\subsection{Definizione del target}
+
+Il target positivo e' un evento account-level \code{!takedown} non-neg emesso dal servizio ufficiale. Gli eventi con \code{neg=true} sono trattati come revoche. Per ogni account positivo si usa il primo takedown osservabile come \code{event_time}. In marzo sono stati osservati \num{159161} eventi non-neg su \num{158803} account positivi unici. Le revoche sono \num{3705}, pari al \pct{2,2749} degli eventi totali \code{!takedown}; gli account positivi con revoca successiva sono \num{2814}, pari al \pct{1,772} dei positivi. Gli account con piu' di un takedown non-neg sono \num{325}, circa lo \pct{0,20}; la distanza media tra primo e secondo takedown e' circa \num{31.8} ore, mentre la distanza media tra primo takedown e prima revoca e' circa \num{44.4} ore.
+
+Questi valori indicano che \code{!takedown} e' un proxy operativo abbastanza stabile per l'enforcement account-level, pur con eccezioni non trascurabili. Per questo la validita' del target e' trattata come controllo preliminare, non come risultato causale.
+
+\subsection{Utility window}
+
+Per ogni account $i$ viene definita una finestra pre-evento:
+\[
+W_i=[T_i-10\text{ giorni},T_i),
+\]
+dove $T_i$ e' il primo takedown per i positivi e uno pseudo-event time per i negativi. Il timestamp esatto $T_i$ e' escluso dalla finestra.
+
+La utility window e' stimata con una procedura positive-only: per ciascun account positivo si identifica il primo takedown osservabile, si considerano i post precedenti all'evento, si calcola la distanza temporale tra post e takedown, si stima il quantile $q80_i$ per account e infine si calcola $Q_{75}(q80_i)$ sugli account con storia sufficiente. La finestra operativa viene scelta come la piu' piccola finestra della griglia candidata superiore alla soglia. Il risultato adottato nelle analisi successive e' una utility window di dieci giorni. \Cref{fig:utility} visualizza la definizione temporale.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{fig02_utility_window.pdf}
+  \caption{Utility window di dieci giorni. Le feature sono calcolate nell'intervallo $[T_i-10,T_i)$; il timestamp dell'evento e' escluso.}
+  \label{fig:utility}
+\end{figure}
+
+\subsection{Costruzione dei positivi e dei negativi}
+
+I positivi sono account con almeno un evento \code{!takedown} non-neg. Tre denominatori devono restare distinti: nel bucket 11--20 marzo si osservano \num{44395} account positivi distinti e \num{44462} eventi; il dataset operativo usato per le analisi pre-evento comprende invece \num{47821} positivi nei giorni 11--21 marzo inclusi. I valori non sono sinonimi.
+
+I negativi sono account osservabili a marzo, creati prima dell'inizio del mese e privi di takedown nel periodo osservato. A ciascun negativo viene assegnato uno pseudo-event time negli stessi giorni dei positivi. Questa assegnazione riduce il confondimento dovuto al calendario, ma non dimostra da sola l'assenza di takedown successivi oltre la finestra osservata. La pipeline metodologica complessiva e' sintetizzata in \cref{fig:pipeline}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{fig03_pipeline.pdf}
+  \caption{Pipeline metodologica: costruzione del target, assegnazione degli pseudo-event time, calcolo dei segnali pre-evento, controllo per esposizione e analisi predittiva.}
+  \label{fig:pipeline}
+\end{figure}
+
+\subsection{Variabili di esposizione e bucket}
+
+Il numero di blocchi ricevuti dipende dall'esposizione pubblica dell'account. Per questo l'analisi controlla due dimensioni: attivita', misurata tramite \code{n_posts_10d}, e visibilita', misurata tramite \code{incoming_follows_10d}. I bucket lineari usati sono: 0, 1, 2, 3--5, 6--10, 11--25, 26--50, 51--100, 101--250, 251--500, 501--1000 e 1001+. L'indice congiunto e' definito come
+\[
+b_{pf}=100\cdot b_p+b_f,
+\]
+con $b_p$ pari al bucket dei post e $b_f$ pari al bucket dei follow ricevuti. La scelta di bucket lineari, anziche' quantili, privilegia interpretabilita' e somiglianza sostanziale tra account. I quattro corner sono: 00, zero post e zero follow ricevuti; 0p, zero post e almeno un follow; p0, almeno un post e zero follow; pp, almeno un post e almeno un follow.
+
+\subsection{Segnali analizzati}
+
+I segnali principali sono il numero totale di blocchi ricevuti, il numero di blocker unici, la distribuzione giornaliera dei blocchi, la presenza in modlist, le labels ufficiali post-level e account-level, e le labels prodotte da labeler terzi. Per ciascun segnale si distinguono presenza, intensita', temporalita', coverage e lift. Il lift e' definito come
+\[
+\operatorname{Lift}=\frac{P(S=1\mid Y=1)}{P(S=1\mid Y=0)}.
+\]
+Un lift alto non implica automaticamente utilita' predittiva se la coverage e' molto bassa.
+
+\subsection{Random Forest e validazione}
+
+La Random Forest e' usata come modello predittivo non causale. L'analisi principale usa il pool massimo con corner 00 escluso, gruppi 0p, p0 e pp bilanciati, \num{28650} osservazioni complessive, \num{14325} positivi e \num{14325} negativi. Il dataset e' diviso in training e test held-out con split stratificato 70/30. Sul training viene mantenuta una validazione \code{StratifiedKFold} a 10 fold con predizioni out-of-fold; dopo questa validazione il modello finale viene addestrato sull'intero training set e valutato separatamente sul test set held-out.
+
+Il modello usa \num{1000} alberi, foglia minima pari a 5, profondita' non vincolata, nessun class weighting e random state 42. La specificazione principale include 11 feature: \code{n_unique_blockers_10d} e le dieci variabili giornaliere da \code{day_0} a \code{day_9}. L'interpretazione del modello usa la Random Forest feature importance basata sulla riduzione dell'impurita'.

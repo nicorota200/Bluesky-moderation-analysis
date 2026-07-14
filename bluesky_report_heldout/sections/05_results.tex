@@ -1,0 +1,266 @@
+\section{Risultati}
+
+\subsection{Distribuzione per corner}
+
+La distribuzione per corner mostra una composizione molto diversa tra positivi e negativi (\cref{tab:corner,fig:corner}). Il corner 00 rappresenta il \pct{60,23} dei positivi e il \pct{33,81} dei negativi. Gli account pp, cioe' con almeno un post e almeno un follow ricevuto, sono invece il \pct{38,55} dei negativi e il \pct{17,42} dei positivi.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Distribuzione degli account per corner di esposizione. Percentuali calcolate su account distinti per campione.}
+  \label{tab:corner}
+  \begin{tabular}{lrr}
+    \toprule
+    Corner & Negativi & Positivi \\
+    \midrule
+    00 & \pct{33,81} & \pct{60,23} \\
+    0p & \pct{10,43} & \pct{12,37} \\
+    p0 & \pct{17,21} & \pct{9,99} \\
+    pp & \pct{38,55} & \pct{17,42} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{fig04_corner_distribution.pdf}
+  \caption{Distribuzione per corner di esposizione. Il corner 00 e' sovrarappresentato tra i positivi.}
+  \label{fig:corner}
+\end{figure}
+
+\FloatBarrier
+\subsection{Corner 00}
+
+Il corner 00 richiede due statistiche distinte. Sul campione completo dei positivi con \code{created_at} disponibile ($N=\num{20205}$), la lifetime media e' \num{1.7476} giorni, circa 42 ore, mentre la mediana e' \num{0.000081} giorni. Nel sottoinsieme degli account 00 con lifetime inferiore a dieci giorni, su \num{20574} account 00 totali considerati, \num{19530} rientrano nella condizione, pari al \pct{94,9}; la media condizionata e' \num{0.378466} giorni, circa \num{9.1} ore. Non si tratta quindi di una singola media generale di nove ore, ma di una media condizionata.
+
+\Cref{fig:lifetime} confronta la lifetime per corner tra i positivi con \code{created_at} disponibile. Nel dataset dedicato ai blocchi, anche i 00 positivi ricevono piu' blocchi dei 00 negativi, ma i livelli assoluti restano bassi (\cref{tab:corner00blocks}).
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.82\linewidth]{fig05_lifetime_corner.pdf}
+  \caption{Lifetime media e mediana dei positivi per corner, sugli account con \code{created_at} disponibile.}
+  \label{fig:lifetime}
+\end{figure}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Blocchi nel corner 00. Le mediane dei blocchi sono zero in entrambi i gruppi.}
+  \label{tab:corner00blocks}
+  \scriptsize
+  \setlength{\tabcolsep}{2.8pt}
+  \begin{tabular}{lrrrr}
+    \toprule
+    Campione & Obs. 00 & Rate & Blocchi & Uniq. blockers \\
+    \midrule
+    Negativi & \num{1341731} & \pct{1,40} & \num{0.0175} & \num{0.0168} \\
+    Positivi & \num{28802} & \pct{3,71} & \num{0.0867} & \num{0.0861} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\FloatBarrier
+\subsection{Confronto generale dei blocchi}
+
+Nel confronto generale i positivi ricevono piu' frequentemente almeno un blocco nei dieci giorni pre-evento e accumulano piu' blocchi in media (\cref{tab:blocks-general,fig:blocks-general}). Il \pct{27,82} dei positivi ha almeno un blocco, contro il \pct{18,09} dei negativi; i blocchi medi sono \num{3.2787} per i positivi e \num{1.1073} per i negativi.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Statistiche generali sui blocchi ricevuti nella finestra di dieci giorni.}
+  \label{tab:blocks-general}
+  \begin{tabularx}{\linewidth}{Xrr}
+    \toprule
+    Indicatore & Negativi & Positivi \\
+    \midrule
+    Osservazioni & \num{4031665} & \num{47821} \\
+    Account distinti & \num{366515} & \num{47821} \\
+    Almeno un blocco nei 10 giorni & \pct{18,09} & \pct{27,82} \\
+    Blocchi medi & \num{1.1073} & \num{3.2787} \\
+    P95 blocchi & \num{3} & \num{9} \\
+    Unique blockers medi & \num{1.0873} & \num{3.2485} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.88\linewidth]{fig06_blocks_general.pdf}
+  \caption{Confronto generale dei blocchi ricevuti: presenza di almeno un blocco, blocchi medi e P95.}
+  \label{fig:blocks-general}
+\end{figure}
+
+\FloatBarrier
+\subsection{Controllo per esposizione}
+
+Il controllo per post bucket mostra che nei bucket bassi i positivi hanno generalmente una probabilita' piu' elevata di ricevere almeno un blocco e accumulano piu' blocchi medi. Nei bucket molto esposti anche i negativi possono ricevere blocchi frequentemente, ma l'intensita' media dei positivi resta spesso piu' alta (\cref{fig:post-bucket}). La matrice post $\times$ follow in \cref{fig:heatmap} conferma che il rapporto tra positivi e negativi deve essere letto entro celle di esposizione comparabili e con supporto sufficiente.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=\linewidth]{fig07_post_bucket_blocks.pdf}
+  \caption{Blocchi per post bucket. A sinistra quota con almeno un blocco; a destra blocchi medi nei dieci giorni pre-evento.}
+  \label{fig:post-bucket}
+\end{figure}
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.82\linewidth]{fig08_exposure_heatmap.pdf}
+  \caption{Heatmap del rapporto tra blocchi medi dei positivi e dei negativi per bucket congiunti post $\times$ follow. Le celle con supporto insufficiente sono mascherate.}
+  \label{fig:heatmap}
+\end{figure}
+
+\FloatBarrier
+\subsection{Temporalita' del segnale}
+
+Escludendo il corner 00, i blocchi dei positivi sono fortemente concentrati vicino all'evento. Il \pct{55,63} dei blocchi dei positivi cade nell'ultimo giorno pre-evento, contro il \pct{10,75} dei negativi; negli ultimi tre giorni la quota sale al \pct{78,77} per i positivi e al \pct{31,10} per i negativi (\cref{tab:timing,fig:timing}). Nella notazione delle feature, \code{day_0} indica il giorno immediatamente precedente all'evento; nel grafico e' visualizzato come giorno $-1$. Il timestamp esatto del takedown non entra nelle feature.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Distribuzione temporale dei blocchi, corner 00 escluso. Percentuali condizionate agli account con almeno un blocco.}
+  \label{tab:timing}
+  \scriptsize
+  \setlength{\tabcolsep}{3pt}
+  \begin{tabular}{lrrr}
+    \toprule
+    Campione & Ultimo giorno & Ultimi 3 giorni & Giorni prec. \\
+    \midrule
+    Negativi & \pct{10,75} & \pct{31,10} & \pct{68,90} \\
+    Positivi & \pct{55,63} & \pct{78,77} & \pct{21,23} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=\linewidth]{fig09_daily_timing.pdf}
+  \caption{Distribuzione giornaliera dei blocchi nella finestra pre-evento, corner 00 escluso.}
+  \label{fig:timing}
+\end{figure}
+
+\FloatBarrier
+\subsection{Progressione Random Forest}
+
+La performance predittiva cambia sensibilmente con la costruzione del campione (\cref{tab:rf-progress,fig:rf-progress}). Il setup con F1 pari a \num{0.728} non e' direttamente comparabile all'analisi principale, perche' esclude sia il corner 00 sia bucket adiacenti e usa un criterio di campionamento diverso. L'analisi principale e' il setup 6, con pool massimo, tre gruppi esposti bilanciati e 11 feature.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Progressione degli esperimenti Random Forest. I valori riportano F1 out-of-fold in cross-validation.}
+  \label{tab:rf-progress}
+  \scriptsize
+  \setlength{\tabcolsep}{2.5pt}
+  \begin{tabularx}{\linewidth}{rXlrr}
+    \toprule
+    Setup & Campione & Corner & Feat. & CV F1 \\
+    \midrule
+    1 & ca. 1.000+1.000 & 00 incluso & 28 & \num{0.371} \\
+    2 & ca. 1.000+1.000 & 00 incluso & 11 & \num{0.382} \\
+    3 & ca. 10.000+10.000 & 00 incluso & 11 & \num{0.377} \\
+    4 & ca. 10.000+10.000 & no 00/adiacenti & 11 & \num{0.728} \\
+    5 & 4 gruppi bilanciati & 00 incluso & 11 & \num{0.563} \\
+    6 & 28.650, 3 gruppi & 00 escluso & 11 & \num{0.688} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{fig10_rf_progression.pdf}
+  \caption{F1 cross-validato nei sei setup Random Forest. Le differenze riflettono anche scelte di campionamento e inclusione dei corner.}
+  \label{fig:rf-progress}
+\end{figure}
+
+\FloatBarrier
+\subsection{Analisi principale}
+
+Nel setup principale la Random Forest raggiunge sul training CV F1 medio \num{0.6876} con deviazione standard \num{0.0134}. Le predizioni out-of-fold sul training producono accuracy \num{0.7385}, precision \num{0.8534}, recall \num{0.5760}, F1 \num{0.6878} e ROC AUC \num{0.7604}. La matrice di confusione cross-validata sul training e':
+\[
+\begin{pmatrix}
+9035 & 992\\
+4252 & 5776
+\end{pmatrix}.
+\]
+
+Dopo il fit finale su tutto il training set, la valutazione held-out sul test set produce accuracy \num{0.7268}, precision \num{0.8409}, recall \num{0.5595}, F1 \num{0.6719} e ROC AUC \num{0.7535}. La matrice di confusione sul test set e':
+\[
+\begin{pmatrix}
+3843 & 455\\
+1893 & 2404
+\end{pmatrix}.
+\]
+
+Il controllo sui DID anonimizzati non mostra sovrapposizioni: \num{0} DID in comune tra training e test e nessun DID condiviso tra fit e validation fold nella cross-validation stratificata.
+
+\FloatBarrier
+\subsection{Risultati per corner esposto}
+
+La performance varia tra gruppi esposti (\cref{tab:corner-rf,fig:corner-rf}). Sul test held-out il gruppo pp e' il piu' classificabile, con ROC AUC \num{0.821} e F1 per i positivi \num{0.745}; 0p e p0 mostrano precision elevata ma recall piu' bassa. I valori cross-validati sul training restano coerenti e leggermente superiori per F1 globale.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Metriche per macro-gruppo, predizioni out-of-fold.}
+  \label{tab:corner-rf}
+  \scriptsize
+  \setlength{\tabcolsep}{2.5pt}
+  \begin{tabular}{lrrrrrr}
+    \toprule
+    Gruppo & $N$ & Acc. & ROC AUC & F1 pos. & Prec. pos. & Recall pos. \\
+    \midrule
+    0p & \num{6656} & \num{0.721} & \num{0.726} & \num{0.630} & \num{0.923} & \num{0.479} \\
+    p0 & \num{6768} & \num{0.738} & \num{0.748} & \num{0.660} & \num{0.927} & \num{0.512} \\
+    pp & \num{6631} & \num{0.757} & \num{0.819} & \num{0.754} & \num{0.773} & \num{0.736} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{fig11_corner_performance.pdf}
+  \caption{Performance held-out del modello principale per corner esposto.}
+  \label{fig:corner-rf}
+\end{figure}
+
+\FloatBarrier
+\subsection{Feature importance}
+
+L'interpretazione usa l'impurity-based feature importance nativa della Random Forest. Nelle analisi a 11 feature, \code{n_unique_blockers_day_0} emerge stabilmente come la variabile piu' importante; nel setup bilanciato sui quattro corner la sua importanza e' \num{0.4424}, seguita da \code{n_unique_blockers_10d} con \num{0.2778} e \code{n_unique_blockers_day_1} con \num{0.0664} (\cref{fig:feature-importance}). Questi valori sono presentati come indicazione interpretativa del peso relativo dei segnali giornalieri, non come stima causale: la misura non indica il segno dell'effetto e puo' essere influenzata dalla correlazione tra feature.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{fig12_feature_importance.pdf}
+  \caption{Random Forest feature importance nel setup a 11 feature bilanciato sui quattro corner.}
+  \label{fig:feature-importance}
+\end{figure}
+
+\FloatBarrier
+\subsection{Labels e modlist}
+
+Le labels ufficiali post-level coprono una quota limitata dei positivi: su \num{47821} positivi, \num{1121} hanno almeno una label post-level nei dieci giorni pre-takedown, pari al \pct{2,344}. Le labels piu' frequenti sono \code{sexual}, con \num{761} positivi (\pct{1,591}), e \code{porn}, con \num{499} positivi (\pct{1,043}). Queste labels vanno distinte dalle labels ufficiali account-level e dal target \code{!takedown}.
+
+I labeler di terze parti mostrano talvolta lift elevati ma coverage bassa (\cref{tab:third-labelers}). L'analisi dei negativi per alcuni labeler e' stata condotta su campioni disponibili, non necessariamente sull'intera popolazione negativa; il campione negativo documentato raggiunge \num{37566} account quando disponibile.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Coverage e lift dei labeler di terze parti.}
+  \label{tab:third-labelers}
+  \scriptsize
+  \setlength{\tabcolsep}{2.8pt}
+  \begin{tabular}{llrrr}
+    \toprule
+    Labeler & Livello & Positivi & Negativi & Lift \\
+    \midrule
+    Skywatch Blue & Account & \pct{2,944} & \pct{0,695} & \num{4.24} \\
+    Blacksky Moderation & Account & \pct{0,090} & \pct{0,006} & \num{14.27} \\
+    Profile Labeller & Account & \pct{1,913} & \pct{0,155} & \num{12.36} \\
+    Skywatch Blue & Post & \pct{1,094} & \pct{1,209} & \num{0.90} \\
+    Blacksky Moderation & Post & \pct{0,004} & \pct{0,008} & \num{0.50} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Le modlist hanno coverage ancora piu' bassa: su \num{47821} positivi, \num{929} sono inclusi in almeno una modlist nei dieci giorni precedenti, pari al \pct{1,943}. Le relazioni account--modlist osservate sono \num{1033}, distribuite su \num{73} modlist distinte; tra i soli positivi inclusi, la media e' \num{1.09}, la mediana e' 1 e il massimo e' 7. \Cref{fig:coverage-lift} confronta coverage e lift dei segnali alternativi.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=\linewidth]{fig13_coverage_lift.pdf}
+  \caption{Coverage e lift per labels, labeler terzi e modlist. Il lift elevato di alcuni segnali non compensa la bassa coverage.}
+  \label{fig:coverage-lift}
+\end{figure}
+
+\FloatBarrier
