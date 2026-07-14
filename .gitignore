@@ -1,4 +1,27 @@
 .venv/
 __pycache__/
 *.pyc
+datasets/
 *.parquet
+*.feather
+*.csv.gz
+*.jsonl
+*.json.gz
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+
+# Generated deliverable bundles / duplicate PDFs
+bluesky_report.zip
+bluesky_report/main.pdf
+bluesky_report/ROTA-NICOLA.pdf

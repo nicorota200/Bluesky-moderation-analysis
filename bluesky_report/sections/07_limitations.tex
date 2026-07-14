@@ -1,0 +1,19 @@
+\section{Limiti}
+
+\subsection{Validita' interna}
+
+Il target \code{!takedown} e' un proxy imperfetto dell'enforcement ufficiale. Revoche e takedown multipli sono rari ma presenti; inoltre, la causa del takedown non e' osservata. I timestamp \code{created_at} possono avere anomalie o mancate disponibilita', specialmente nelle analisi di lifetime. Per i negativi, lo pseudo-event time controlla il calendario ma non equivale a un evento reale. Alcuni account negativi possono comparire in piu' osservazioni account-giorno, creando dipendenza tra righe. Di conseguenza, uno stesso DID potrebbe comparire in fold differenti nelle cross-validation se non viene applicata una grouped cross-validation.
+
+Un limite importante riguarda la validazione predittiva: le metriche principali sono basate su predizioni out-of-fold in cross-validation e non su una validazione temporale esterna. Inoltre, il campionamento bilanciato impone una prevalenza artificiale del 50\%, diversa dalla prevalenza reale dei takedown nella popolazione osservabile.
+
+\subsection{Validita' esterna}
+
+L'analisi e' limitata a marzo 2026 e a una finestra operativa specifica. La piattaforma evolve rapidamente, le policy possono cambiare e campagne spam concentrate nel tempo possono influenzare la composizione dei takedown. La generalizzabilita' ad altri mesi, ad altre fasi di crescita di Bluesky o ad altri social network deve quindi essere verificata con validazione temporale esterna.
+
+\subsection{Validita' di costrutto}
+
+Post e follow ricevuti sono proxy incompleti dell'esposizione pubblica: non misurano impressions, ranking nei feed, quote esterne o visibilita' algoritmica. I blocchi sono un proxy della reazione comunitaria, ma possono riflettere conflitti sociali, campagne coordinate o preferenze individuali non necessariamente legate a violazioni. Labels e modlist hanno coverage limitata e finalita' eterogenee. Le violazioni account-level sono anch'esse eterogenee: spam, impersonation, ban evasion e contenuti problematici possono produrre traiettorie di segnale diverse.
+
+\subsection{Validita' statistica}
+
+Le distribuzioni dei blocchi sono zero-inflated e heavy-tailed. Alcuni bucket di esposizione hanno celle sottili, quindi i confronti cromatici nelle heatmap vanno letti come descrittivi e non come test di significativita'. Le feature giornaliere sono correlate tra loro; la impurity-based feature importance puo' distribuire importanza tra variabili ridondanti ed e' sensibile alla struttura delle feature. Le analisi presentate sono quindi associative e predittive, non causali.

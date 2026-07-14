@@ -1,0 +1,81 @@
+\documentclass[10pt,a4paper]{article}
+
+\newcommand{\AuthorName}{Nicola Rota -- Matricola 10906471}
+\newcommand{\InstitutionName}{Politecnico di Milano}
+\newcommand{\TutorName}{Carlo Alberto Bono}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\setlength{\emergencystretch}{2em}
+\usepackage{geometry}
+\geometry{margin=1.7cm}
+\setlength{\columnsep}{0.7cm}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{threeparttable}
+\usepackage{siunitx}
+\sisetup{output-decimal-marker={,}, group-separator={.}, group-minimum-digits=4, group-digits=integer}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{caption}
+\captionsetup{font=footnotesize,labelfont=bf}
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage[table]{xcolor}
+\definecolor{linkblue}{HTML}{1F4E79}
+\usepackage{csquotes}
+\usepackage[colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue]{hyperref}
+\usepackage[noabbrev,nameinlink]{cleveref}
+\crefname{figure}{figura}{figure}
+\Crefname{figure}{Figura}{Figure}
+\crefname{table}{tabella}{tabelle}
+\Crefname{table}{Tabella}{Tabelle}
+\crefname{section}{sezione}{sezioni}
+\Crefname{section}{Sezione}{Sezioni}
+\providecommand{\crefpairconjunction}{}
+\providecommand{\crefmiddleconjunction}{}
+\providecommand{\creflastconjunction}{}
+\renewcommand{\crefpairconjunction}{ e }
+\renewcommand{\crefmiddleconjunction}{, }
+\renewcommand{\creflastconjunction}{ e }
+\usepackage[backend=biber,style=authoryear,natbib=true,maxcitenames=2,maxbibnames=99]{biblatex}
+\addbibresource{references.bib}
+
+\graphicspath{{figures/}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\pct}[1]{#1\%}
+\newcommand{\reporttitle}{Segnali comunitari e moderazione ufficiale su Bluesky: analisi temporale e predittiva dei takedown account-level}
+
+\title{\reporttitle\\\large Bluesky / ATProto, marzo 2026}
+\author{\AuthorName\\\InstitutionName\\Tutor: \TutorName}
+\date{\today}
+
+\begin{document}
+\twocolumn[
+\begin{@twocolumnfalse}
+\maketitle
+
+\begin{abstract}
+Questo lavoro analizza se segnali comunitari pubblicamente osservabili su Bluesky, in particolare blocchi ricevuti, inclusione in modlist e labels prodotte da servizi ufficiali o indipendenti, contengano informazione sul successivo takedown account-level da parte della moderazione ufficiale. Lo studio usa dataset derivati e anonimizzati relativi soprattutto a marzo 2026, costruiti a partire da dati ATProto, stream di post, profili, blocchi, liste e log del labeler ufficiale. L'unita' analitica e' l'account-evento: per i positivi il tempo di riferimento e' il primo evento \code{!takedown}; per i negativi e' uno pseudo-event time assegnato negli stessi giorni dei positivi. Le feature sono calcolate nella finestra pre-evento di dieci giorni. I risultati mostrano che i blocchi sono il segnale piu' informativo tra quelli analizzati: i positivi hanno piu' spesso almeno un blocco, ricevono piu' blocchi in media e concentrano il segnale negli ultimi giorni prima del takedown. Tuttavia il potere predittivo dipende dall'esposizione pubblica dell'account. Una Random Forest basata su unique blockers, escludendo il corner 00 e bilanciando i gruppi 0p, p0 e pp, raggiunge F1 cross-validato pari a 0,6878 e ROC AUC pari a 0,7604. Labels e modlist mostrano talvolta lift elevati, ma coverage insufficiente. L'analisi resta osservazionale, correlazionale e non causale.
+\end{abstract}
+
+\noindent\textbf{Parole chiave:} Bluesky; ATProto; moderazione; blocchi; takedown; Random Forest.
+\vspace{1em}
+\end{@twocolumnfalse}
+]
+
+\input{sections/01_introduction}
+\input{sections/02_background}
+\input{sections/03_research_questions}
+\input{sections/04_data_methods}
+\input{sections/05_results}
+\input{sections/06_discussion}
+\input{sections/07_limitations}
+\input{sections/08_conclusion}
+
+\printbibliography
+
+\end{document}
