@@ -14,6 +14,32 @@ Expected local data location, either one works:
 
 The local workspace may use `datasets/balduf_anon_march_2026` as a symlink to `../balduf_anon_march_2026`. Both `datasets/` and `balduf_anon_march_2026/` are ignored by git.
 
+## Python requirements
+
+The tracked notebooks and report-generation script require:
+
+```txt
+duckdb==1.5.4
+graphviz
+ipython
+matplotlib==3.11.0
+notebook==7.5.5
+numpy==2.5.1
+pandas==3.0.3
+pyarrow==25.0.0
+scikit-learn==1.9.0
+scipy==1.18.0
+seaborn==0.13.2
+```
+
+Install them with:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+`pyarrow` is included because the Random Forest notebook uses `pandas.read_parquet(...)`. `notebook` and `ipython` are included for running the `.ipynb` files interactively; they are not used by the standalone report script.
+
 ## Main analysis notebooks
 
 - `analysis/rf_and_shap_on_blocks.ipynb`: Random Forest and held-out validation from derived block-feature pools.

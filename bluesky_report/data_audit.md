@@ -1,6 +1,6 @@
 # Data audit
 
-Questo audit documenta le scelte numeriche e metodologiche adottate nel report. La gerarchia usata e': codice e output dei notebook, script Python, `bluesky.md`, `MEMORIA.txt`, parte report di `bluesky_scaletta_bozze.md`, presentazione PowerPoint.
+Questo audit documenta le scelte numeriche e metodologiche adottate nel report. La gerarchia usata e': codice e output dei notebook, script Python, appunti operativi locali, parte report di `bluesky_scaletta_bozze.md`, presentazione PowerPoint.
 
 ## Discrepanze e decisioni principali
 
@@ -15,7 +15,7 @@ Questo audit documenta le scelte numeriche e metodologiche adottate nel report. 
 
 ## Valori non verificabili o verificati solo indirettamente
 
-- Alcuni valori su labels di terze parti derivano da `bluesky.md` e dalla scaletta report; il notebook `analisi_labels_march.ipynb` e' stato ispezionato, ma non tutte le celle stampano tabelle finali complete. Nel testo si segnala che i negativi per alcuni labeler sono campionati.
+- Alcuni valori su labels di terze parti derivano dagli appunti operativi locali e dalla scaletta report; il notebook `analisi_labels_march.ipynb` e' stato ispezionato, ma non tutte le celle stampano tabelle finali complete. Nel testo si segnala che i negativi per alcuni labeler sono campionati.
 - La procedura della utility window e' verificata dallo script `analysis/utility_window/true_takedown_utility_window.py`; non sono stati inventati output numerici non presenti nei materiali. Il report riporta solo il risultato operativo di 10 giorni.
 - La causa sostantiva dei takedown non e' osservata. Il corner 00 e' interpretato come coerente con dinamiche anti-abuso account-level, non come prova di bot o spam per ogni account.
 
