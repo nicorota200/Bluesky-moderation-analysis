@@ -86,6 +86,6 @@ Un lift alto non implica automaticamente utilita' predittiva se la coverage e' m
 
 \subsection{Random Forest e validazione}
 
-La Random Forest e' usata come modello predittivo non causale. L'analisi principale usa il pool massimo con corner 00 escluso, gruppi 0p, p0 e pp bilanciati, \num{28650} osservazioni complessive, \num{14325} positivi e \num{14325} negativi. La validazione riportata usa predizioni out-of-fold su un campione stratificato di training pari al 70\% del dataset bilanciato, con \code{StratifiedKFold} a 10 fold.
+La Random Forest e' usata come modello predittivo non causale. L'analisi principale usa il pool massimo con corner 00 escluso, gruppi 0p, p0 e pp bilanciati, \num{28650} osservazioni complessive, \num{14325} positivi e \num{14325} negativi. Il dataset e' diviso in training e test held-out con split stratificato 70/30. Sul training viene mantenuta una validazione \code{StratifiedKFold} a 10 fold con predizioni out-of-fold; dopo questa validazione il modello finale viene addestrato sull'intero training set e valutato separatamente sul test set held-out.
 
 Il modello usa \num{1000} alberi, foglia minima pari a 5, profondita' non vincolata, nessun class weighting e random state 42. La specificazione principale include 11 feature: \code{n_unique_blockers_10d} e le dieci variabili giornaliere da \code{day_0} a \code{day_9}. L'interpretazione del modello usa la Random Forest feature importance basata sulla riduzione dell'impurita'.

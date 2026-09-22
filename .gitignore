@@ -24,8 +24,9 @@ balduf_anon_march_2026/
 *.toc
 
 # Generated deliverable bundles / duplicate PDFs
+exported/
 bluesky_report.zip
 bluesky_report/main.pdf
 bluesky_report/ROTA-NICOLA.pdf
-bluesky_report_heldout/build/
-bluesky_report_heldout/main_nobiber.tex
+bluesky_report/build/
+bluesky_report/main_nobiber.tex

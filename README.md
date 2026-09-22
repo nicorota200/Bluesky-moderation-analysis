@@ -21,11 +21,11 @@ The local workspace may use `datasets/balduf_anon_march_2026` as a symlink to `.
 - `analysis/analisi_labels_march.ipynb`: official-label analysis retained for reference; still depends on old machine-specific label-log inputs.
 - `analysis/analisi_blocklists.ipynb`: modlist analysis retained for reference; still depends on old machine-specific list/list-item inputs.
 
-The held-out report artifacts are the canonical final outputs:
+The final outputs use the held-out validation version:
 
-- `ROTA-NICOLA-heldout.pdf`
-- `bluesky_presentazione_final_heldout.pptx`
-- `bluesky_report_heldout/`
+- `ROTA-NICOLA.pdf`
+- `bluesky_presentazione_final.pptx`
+- `bluesky_report/`
 - `analysis/rf_main_heldout_metrics.json`
 
 ## Local legacy code

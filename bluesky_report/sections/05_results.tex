@@ -169,7 +169,7 @@ La performance predittiva cambia sensibilmente con la costruzione del campione (
 \FloatBarrier
 \subsection{Analisi principale}
 
-Nel setup principale la Random Forest raggiunge CV F1 medio \num{0.6876} con deviazione standard \num{0.0134}. Le predizioni out-of-fold producono accuracy \num{0.7385}, precision \num{0.8534}, recall \num{0.5760}, F1 \num{0.6878} e ROC AUC \num{0.7604}. La matrice di confusione cross-validata e':
+Nel setup principale la Random Forest raggiunge sul training CV F1 medio \num{0.6876} con deviazione standard \num{0.0134}. Le predizioni out-of-fold sul training producono accuracy \num{0.7385}, precision \num{0.8534}, recall \num{0.5760}, F1 \num{0.6878} e ROC AUC \num{0.7604}. La matrice di confusione cross-validata sul training e':
 \[
 \begin{pmatrix}
 9035 & 992\\
@@ -177,10 +177,20 @@ Nel setup principale la Random Forest raggiunge CV F1 medio \num{0.6876} con dev
 \end{pmatrix}.
 \]
 
+Dopo il fit finale su tutto il training set, la valutazione held-out sul test set produce accuracy \num{0.7268}, precision \num{0.8409}, recall \num{0.5595}, F1 \num{0.6719} e ROC AUC \num{0.7535}. La matrice di confusione sul test set e':
+\[
+\begin{pmatrix}
+3843 & 455\\
+1893 & 2404
+\end{pmatrix}.
+\]
+
+Il controllo sui DID anonimizzati non mostra sovrapposizioni: \num{0} DID in comune tra training e test e nessun DID condiviso tra fit e validation fold nella cross-validation stratificata.
+
 \FloatBarrier
 \subsection{Risultati per corner esposto}
 
-La performance varia tra gruppi esposti (\cref{tab:corner-rf,fig:corner-rf}). Il gruppo pp e' il piu' classificabile, con ROC AUC \num{0.819} e F1 per i positivi \num{0.754}; 0p e p0 mostrano precision elevata ma recall piu' bassa.
+La performance varia tra gruppi esposti (\cref{tab:corner-rf,fig:corner-rf}). Sul test held-out il gruppo pp e' il piu' classificabile, con ROC AUC \num{0.821} e F1 per i positivi \num{0.745}; 0p e p0 mostrano precision elevata ma recall piu' bassa. I valori cross-validati sul training restano coerenti e leggermente superiori per F1 globale.
 
 \begin{table}[!htbp]
   \centering
@@ -202,7 +212,7 @@ La performance varia tra gruppi esposti (\cref{tab:corner-rf,fig:corner-rf}). Il
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=0.86\linewidth]{fig11_corner_performance.pdf}
-  \caption{Performance del modello principale per corner esposto.}
+  \caption{Performance held-out del modello principale per corner esposto.}
   \label{fig:corner-rf}
 \end{figure}
 

@@ -4,7 +4,7 @@
 
 Il target \code{!takedown} e' un proxy imperfetto dell'enforcement ufficiale. Revoche e takedown multipli sono rari ma presenti; inoltre, la causa del takedown non e' osservata. I timestamp \code{created_at} possono avere anomalie o mancate disponibilita', specialmente nelle analisi di lifetime. Per i negativi, lo pseudo-event time controlla il calendario ma non equivale a un evento reale. Alcuni account negativi possono comparire in piu' osservazioni account-giorno, creando dipendenza tra righe. Di conseguenza, uno stesso DID potrebbe comparire in fold differenti nelle cross-validation se non viene applicata una grouped cross-validation.
 
-Un limite importante riguarda la validazione predittiva: le metriche principali sono basate su predizioni out-of-fold in cross-validation e non su una validazione temporale esterna. Inoltre, il campionamento bilanciato impone una prevalenza artificiale del 50\%, diversa dalla prevalenza reale dei takedown nella popolazione osservabile.
+Un limite importante riguarda la validazione predittiva: oltre alle predizioni out-of-fold in cross-validation sul training, l'analisi ora include un test set held-out derivato dallo stesso campione bilanciato, ma non una validazione temporale esterna su mesi successivi. Inoltre, il campionamento bilanciato impone una prevalenza artificiale del 50\%, diversa dalla prevalenza reale dei takedown nella popolazione osservabile.
 
 \subsection{Validita' esterna}
 

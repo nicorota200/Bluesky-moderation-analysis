@@ -13,7 +13,7 @@ from matplotlib.ticker import PercentFormatter
 REPORT_DIR = Path(__file__).resolve().parents[1]
 ROOT = REPORT_DIR.parent
 FIG_DIR = REPORT_DIR / "figures"
-DATA_DIR = ROOT / "datasets" / "balduf_anon_march_2026"
+DATA_DIR = ROOT / "balduf_anon_march_2026"
 FIG_DIR.mkdir(parents=True, exist_ok=True)
 
 COLORS = {
@@ -344,9 +344,9 @@ def fig_corner_performance():
     data = pd.DataFrame(
         {
             "group": ["0p", "p0", "pp"],
-            "accuracy": [0.720703, 0.737589, 0.757352],
-            "roc_auc": [0.726013, 0.747718, 0.818529],
-            "f1": [0.630344, 0.660031, 0.754088],
+            "accuracy": [0.704216, 0.716751, 0.758822],
+            "roc_auc": [0.722332, 0.734212, 0.820582],
+            "f1": [0.615108, 0.636196, 0.745481],
         }
     )
     x = np.arange(len(data))
