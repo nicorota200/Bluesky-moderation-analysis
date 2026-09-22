@@ -1,22 +1,89 @@
-# Bluesky-moderation-analysis
-- Tutor: Carlo Alberto Bono
-- University: Politecnico di Milano
-- Study of moderation labels, account enforcement events, and blocklist dynamics in the Bluesky social network.
+# Bluesky Moderation Analysis
 
-## Reproducibility scope
+Research project on whether public community signals on Bluesky, especially account blocks, contain information about later official account-level takedowns.
 
-The repository is organized around the derived anonymized March 2026 parquet datasets. These datasets are required to rerun the main block-signal and Random Forest analyses, but they must not be published to GitHub.
+Tutor: Carlo Alberto Bono
+University: Politecnico di Milano
 
-Expected local data location, either one works:
+## What To Open First
+
+- `ROTA-NICOLA.pdf`: final report.
+- `bluesky_presentazione_final.pptx`: final presentation.
+- `analysis/rf_on_blocks.ipynb`: main Random Forest analysis and held-out validation.
+- `analysis/blocks_signal_v3.ipynb`: descriptive analysis of block signals before takedown.
+
+## Key Findings
+
+- Blocks are the strongest public community signal among the signals analyzed.
+- The signal is concentrated near the takedown event and is more informative for accounts with some observable exposure.
+- Accounts with zero posts and zero incoming follows behave differently: many appear to be removed too quickly to accumulate public community signals.
+- The main Random Forest model excludes the zero-exposure corner and uses 11 blocker-count features.
+- Final held-out test metrics from the main model:
+  - Accuracy: `0.7268`
+  - Precision: `0.8409`
+  - Recall: `0.5595`
+  - F1: `0.6719`
+  - ROC AUC: `0.7535`
+
+## Repository Contents
+
+```text
+.
+|-- ROTA-NICOLA.pdf
+|-- bluesky_presentazione_final.pptx
+|-- analysis/
+|   |-- blocks_signal_v3.ipynb
+|   |-- rf_on_blocks.ipynb
+|   `-- scripts/analisi_predittiva/creazione_pool.ipynb
+|-- requirements.txt
+`-- README.md
+```
+
+The final report and presentation are the public deliverables. The notebooks are included to document and reproduce the main analysis from derived anonymized parquet datasets.
+
+## Data Availability
+
+The source datasets are not published in this repository. They are derived anonymized parquet files from the March 2026 Bluesky/ATProto analysis workspace.
+
+Expected local data directory, either path works:
 
 - `balduf_anon_march_2026/`
 - `datasets/balduf_anon_march_2026/`
 
-The local workspace may use `datasets/balduf_anon_march_2026` as a symlink to `../balduf_anon_march_2026`. Both `datasets/` and `balduf_anon_march_2026/` are ignored by git.
+Both directories are ignored by git.
 
-## Python requirements
+Minimum derived inputs for the public notebooks:
 
-The tracked notebooks require:
+```text
+positive_blocks_analysis_10d_mar2026_v3_anon.parquet
+negative_blocks_analysis_10d_mar2026_v3_anon.parquet
+raw_positive_pool_mar2026_created_anon.parquet
+rf_1000_pool/
+rf_10000_pool/
+rf_10000_no00_01_pool/
+rf_10000_balanced_4groups_pool/
+rf_max_pool_no_00/
+```
+
+`analysis/scripts/analisi_predittiva/creazione_pool.ipynb` regenerates the RF pool folders from the positive and negative `v3` block-feature parquet files. It preserves the original sampling logic: build balanced positive/negative pools by exposure bucket, exclude low-utility corners for selected variants, and create the final max pool without the zero-exposure corner.
+
+## Reproducibility
+
+Create an environment and install dependencies:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Then place the derived parquet directory at one of the expected data paths and run:
+
+1. `analysis/scripts/analisi_predittiva/creazione_pool.ipynb` if RF pool parquet files need to be regenerated.
+2. `analysis/blocks_signal_v3.ipynb` for descriptive block-signal analysis.
+3. `analysis/rf_on_blocks.ipynb` for Random Forest validation and held-out metrics.
+
+The RF notebook writes `rf_main_heldout_metrics.json` as a generated local artifact. The JSON is ignored by git because it is reproducible from the notebook and derived data.
+
+## Requirements
 
 ```txt
 duckdb==1.5.4
@@ -32,27 +99,11 @@ scipy==1.18.0
 seaborn==0.13.2
 ```
 
-Install them with:
+`pyarrow` is required for `pandas.read_parquet(...)`. `notebook` and `ipython` are included for running the notebooks interactively.
 
-```bash
-python -m pip install -r requirements.txt
-```
+## Limitations
 
-`pyarrow` is included because the Random Forest notebook uses `pandas.read_parquet(...)`. `notebook` and `ipython` are included for running the `.ipynb` files interactively.
-
-## Main analysis notebooks
-
-- `analysis/rf_and_shap_on_blocks.ipynb`: Random Forest and held-out validation from derived block-feature pools.
-- `analysis/blocks_signal_v3.ipynb`: descriptive block-signal analysis from derived positive/negative block parquet files.
-- `analysis/analisi_labels_march.ipynb`: official-label analysis retained for reference; still depends on old machine-specific label-log inputs.
-- `analysis/analisi_blocklists.ipynb`: modlist analysis retained for reference; still depends on old machine-specific list/list-item inputs.
-
-The final outputs use the held-out validation version:
-
-- `ROTA-NICOLA.pdf`
-- `bluesky_presentazione_final.pptx`
-- `analysis/rf_main_heldout_metrics.json`
-
-## Local legacy code
-
-Old machine-specific scripts and exploratory notebooks are preserved locally under `_local/legacy/`. That folder is ignored by git and is not intended to be published.
+- The raw source data and derived anonymized parquet datasets are not included.
+- The analysis is observational and correlational; it does not prove that blocks cause takedowns.
+- Some supporting labeler and modlist explorations required non-public machine-specific inputs and are not part of the public reproducible repo.
+- The final PDF is the polished report; notebooks are analysis artifacts rather than a production pipeline.

@@ -9,6 +9,8 @@ balduf_anon_march_2026/
 *.csv.gz
 *.jsonl
 *.json.gz
+analysis/rf_main_heldout_metrics.json
+rf_main_heldout_metrics.json
 
 # LaTeX build artifacts
 *.aux
