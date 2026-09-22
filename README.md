@@ -16,7 +16,7 @@ The local workspace may use `datasets/balduf_anon_march_2026` as a symlink to `.
 
 ## Python requirements
 
-The tracked notebooks and report-generation script require:
+The tracked notebooks require:
 
 ```txt
 duckdb==1.5.4
@@ -38,7 +38,7 @@ Install them with:
 python -m pip install -r requirements.txt
 ```
 
-`pyarrow` is included because the Random Forest notebook uses `pandas.read_parquet(...)`. `notebook` and `ipython` are included for running the `.ipynb` files interactively; they are not used by the standalone report script.
+`pyarrow` is included because the Random Forest notebook uses `pandas.read_parquet(...)`. `notebook` and `ipython` are included for running the `.ipynb` files interactively.
 
 ## Main analysis notebooks
 
@@ -51,7 +51,6 @@ The final outputs use the held-out validation version:
 
 - `ROTA-NICOLA.pdf`
 - `bluesky_presentazione_final.pptx`
-- `bluesky_report/`
 - `analysis/rf_main_heldout_metrics.json`
 
 ## Local legacy code
