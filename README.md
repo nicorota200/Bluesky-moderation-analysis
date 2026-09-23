@@ -18,7 +18,7 @@ University: Politecnico di Milano
 - The signal is concentrated near the takedown event and is more informative for accounts with some observable exposure.
 - Accounts with zero posts and zero incoming follows behave differently: many appear to be removed too quickly to accumulate public community signals.
 - The main Random Forest model excludes the zero-exposure corner and uses 11 blocker-count features.
-- Final held-out test metrics from the main model:
+- Final held-out test metrics reported in the final PDF, using the canonical precomputed RF pools:
   - Accuracy: `0.7268`
   - Precision: `0.8409`
   - Recall: `0.5595`
@@ -58,6 +58,11 @@ Minimum derived inputs for the public notebooks:
 positive_blocks_analysis_10d_mar2026_v3_anon.parquet
 negative_blocks_analysis_10d_mar2026_v3_anon.parquet
 raw_positive_pool_mar2026_created_anon.parquet
+```
+
+The Random Forest notebook can use either the precomputed RF pool folders:
+
+```text
 rf_1000_pool/
 rf_10000_pool/
 rf_10000_no00_01_pool/
@@ -65,7 +70,13 @@ rf_10000_balanced_4groups_pool/
 rf_max_pool_no_00/
 ```
 
-`analysis/scripts/analisi_predittiva/creazione_pool.ipynb` regenerates the RF pool folders from the positive and negative `v3` block-feature parquet files. It preserves the original sampling logic: build balanced positive/negative pools by exposure bucket, exclude low-utility corners for selected variants, and create the final max pool without the zero-exposure corner.
+or regenerated pools under:
+
+```text
+generated_rf_pools/
+```
+
+`analysis/scripts/analisi_predittiva/creazione_pool.ipynb` regenerates all RF pool folders from the positive and negative `v3` block-feature parquet files. It writes them under `generated_rf_pools/` so existing local pool parquet files are not overwritten. The regenerated pools are semantically equivalent to the original random samples, but they do not necessarily contain the exact same accounts; model metrics can therefore differ slightly.
 
 ## Reproducibility
 
@@ -77,9 +88,21 @@ python -m pip install -r requirements.txt
 
 Then place the derived parquet directory at one of the expected data paths and run:
 
-1. `analysis/scripts/analisi_predittiva/creazione_pool.ipynb` if RF pool parquet files need to be regenerated.
+1. `analysis/scripts/analisi_predittiva/creazione_pool.ipynb` if RF pool parquet files need to be regenerated. This creates `generated_rf_pools/` inside the local data directory.
 2. `analysis/blocks_signal_v3.ipynb` for descriptive block-signal analysis.
 3. `analysis/rf_on_blocks.ipynb` for Random Forest validation and held-out metrics.
+
+The RF notebook automatically prefers `generated_rf_pools/` when it exists; otherwise it falls back to the precomputed RF pool folders in the data directory. To force a specific pool location, set `RF_POOL_ROOT` before running the notebook.
+
+Because RF pools are sampled artifacts, regenerated pools are expected to produce slightly different metrics. A verified regenerated-pool run produced:
+
+```text
+Accuracy:  0.7358
+Precision: 0.8457
+Recall:    0.5767
+F1:        0.6858
+ROC AUC:   0.7617
+```
 
 The RF notebook writes `rf_main_heldout_metrics.json` as a generated local artifact. The JSON is ignored by git because it is reproducible from the notebook and derived data.
 
